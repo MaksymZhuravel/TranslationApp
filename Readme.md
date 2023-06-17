@@ -42,3 +42,6 @@ To start the app on an Android or iOS device or emulator, use the following comm
 - For IOS:
   ```yarn ios```
 
+
+https://github.com/MaksymZhuravel/TranslationApp/assets/134377290/0ec1622f-e01e-4c56-92d1-d310f2cfdc1a
+
