@@ -1,0 +1,6 @@
+enum SCREENS {
+  HOME = 'HOME',
+  TRANSLATION_TABLE = 'TRANSLATION_TABLE',
+}
+
+export default SCREENS;
