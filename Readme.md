@@ -3,11 +3,9 @@ This is a React Native project for translating phrases using a Key-Value system.
 
 ## Features
 
-- Add, edit, and delete translations for different languages.
-- Search for translations by key or value.
+- Add and edit translations for different languages.
 - Export translations to a file for backup or sharing.
 - Import translations from a file to populate the translation database.
-- Supports multiple languages for localization.
 
 ## Getting Started
 
