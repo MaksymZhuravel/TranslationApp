@@ -7,6 +7,8 @@ import {
   usePostTranslationMutation,
 } from '~redux/translate/translate';
 import styles from '~components/TranslationTable/styles';
+import 'react-native-get-random-values';
+import {Text} from 'react-native';
 
 interface ITranslationTableProps {
   focusedId?: string | null;
@@ -26,7 +28,7 @@ const TranslationTable: React.FC<ITranslationTableProps> = ({
   refetch,
 }) => {
   const [updateTranslation] = usePathTranslationMutation();
-  const [postTranslation] = usePostTranslationMutation();
+  const [postTranslation, result] = usePostTranslationMutation();
   const [text, setText] = React.useState('');
   const [loader, setLoader] = useState(false);
 
@@ -61,13 +63,32 @@ const TranslationTable: React.FC<ITranslationTableProps> = ({
           text: textString,
           code: wordFrom ? to : from,
         });
+
+        console.log(
+          result,
+          {
+            key: translationKey,
+            text: textString,
+            code: wordFrom ? to : from,
+          },
+          'CODE',
+          translationKey,
+        );
       }
       setText('');
       await refetch();
       setLoader(false);
       setFocusedId(null);
     },
-    [from, postTranslation, refetch, setFocusedId, to, updateTranslation],
+    [
+      from,
+      postTranslation,
+      refetch,
+      result,
+      setFocusedId,
+      to,
+      updateTranslation,
+    ],
   );
 
   return (
@@ -80,7 +101,10 @@ const TranslationTable: React.FC<ITranslationTableProps> = ({
           {to.toUpperCase()}
         </DataTable.Title>
       </DataTable.Header>
-      {translations?.map(translation => {
+      {translations?.length === 0 ? (
+        <Text style={styles.noDataText}>No data</Text>
+      ) : null}
+      {translations?.map((translation, index) => {
         const wordFrom = translation.translations.find(
           item => item.language.code === from,
         );
@@ -92,23 +116,25 @@ const TranslationTable: React.FC<ITranslationTableProps> = ({
         return (
           <DataTable.Row key={translation.id}>
             <FieldWithInput
-              onPress={() => handleOnPressCell(wordFrom?.id)}
+              onPress={() => handleOnPressCell(wordFrom?.id || `from-${index}`)}
               focusedId={focusedId}
               onSubmit={() =>
                 onSubmit(text, translation.key, wordFrom?.id, wordFrom)
               }
               isLoading={loader}
+              id={`from-${index}`}
               text={text}
               word={wordFrom}
               setText={setText}
             />
             <FieldWithInput
-              onPress={() => setFocusedId(wordTo?.id)}
+              onPress={() => setFocusedId(wordTo?.id || `to-${index}`)}
               focusedId={focusedId}
               onSubmit={() =>
                 onSubmit(text, translation.key, wordTo?.id, wordFrom)
               }
               isLoading={loader}
+              id={`to-${index}`}
               text={text}
               word={wordTo}
               setText={setText}

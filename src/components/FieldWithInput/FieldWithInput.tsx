@@ -11,6 +11,7 @@ import styles from '~components/FieldWithInput/styles';
 import {Translation} from '~types/api/translateApi.types';
 import {ThemeColors} from '~asssets/theme';
 import {Tick} from '~asssets/icons';
+import 'react-native-get-random-values';
 
 interface IFieldWithInputProps {
   onPress: () => void;
@@ -19,6 +20,7 @@ interface IFieldWithInputProps {
   onSubmit: () => void;
   isLoading: boolean;
   text: string;
+  id: string;
   setText: (text: string) => void;
 }
 
@@ -30,12 +32,13 @@ const FieldWithInput: React.FC<IFieldWithInputProps> = ({
   isLoading,
   text,
   setText,
+  id,
 }) => {
   const {width} = useWindowDimensions();
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.field}>
-      {focusedId === word?.id ? (
+      {focusedId === word?.id || focusedId === id ? (
         <View>
           <TextInput
             value={text}
