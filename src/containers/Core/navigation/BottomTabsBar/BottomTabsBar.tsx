@@ -16,7 +16,6 @@ const BottomTabsBar = () => {
           key={screen.name}
           name={screen.title}
           options={{
-            unmountOnBlur: true,
             tabBarIcon: ({focused}) => {
               return (
                 <View>
@@ -28,7 +27,9 @@ const BottomTabsBar = () => {
                 </View>
               );
             },
+
             headerShown: true,
+            headerStyle: {backgroundColor: ThemeColors.interface},
             tabBarLabelPosition: 'below-icon',
             tabBarLabel: ({focused}) => {
               return (

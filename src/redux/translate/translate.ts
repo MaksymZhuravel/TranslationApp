@@ -1,24 +1,17 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {ILanguage, QueryDetailsParams} from '~types/api/translateApi.types';
+import {
+  ILanguage,
+  QueryDetailsParams,
+  TranslationBody,
+  TranslationPathParams,
+  Translations,
+} from '~types/api/translateApi.types';
 
-const buildQueryString = (
-  path: string,
-  // {date, orderType, orderBy, rangeStart, rangeEnd, selectedWorkspaceSubdomain}: QueryDetailsParams & ExtraOptions,
-) => {
+const buildQueryString = (path: string) => {
   const queryParams = new URLSearchParams();
-  // if (orderType && orderBy && date) {
-  //   queryParams.append('orderBy', orderBy);
-  //   queryParams.append('orderType', orderType);
-  //   queryParams.append('date', date);
-  // } else if (date) {
-  //   queryParams.append('date', date);
-  // } else if (rangeStart && rangeEnd) {
-  //   queryParams.append('rangeStart', rangeStart);
-  //   queryParams.append('rangeEnd', rangeEnd);
-  // }
   const queryString = queryParams.toString() ? `?${queryParams}` : '';
 
-  return `http://localhost:3000${path}${queryString}`;
+  return `https://translation-api-d85cd220a123.herokuapp.com/${path}${queryString}`;
 };
 
 export const translateApi = createApi({
@@ -33,10 +26,36 @@ export const translateApi = createApi({
   endpoints: builder => ({
     getLanguages: builder.query<ILanguage[], QueryDetailsParams>({
       query: _params => ({
-        url: buildQueryString('/languages'), // add params here if needed
+        url: buildQueryString('languages'), // add params here if needed
+      }),
+    }),
+    getTranslations: builder.query<Translations[], QueryDetailsParams>({
+      query: _params => ({
+        url: buildQueryString('translation'), // add params here if needed
+      }),
+    }),
+    postTranslation: builder.mutation<void, TranslationBody>({
+      query: data => ({
+        url: buildQueryString('translation'), // add params here if needed
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    pathTranslation: builder.mutation<void, TranslationPathParams>({
+      query: data => ({
+        url: buildQueryString(`translation/${data.translationId}`), // add params here if needed
+        method: 'PATCH',
+        body: {
+          text: data.text,
+        },
       }),
     }),
   }),
 });
 
-export const {useGetLanguagesQuery} = translateApi;
+export const {
+  useGetLanguagesQuery,
+  useGetTranslationsQuery,
+  usePostTranslationMutation,
+  usePathTranslationMutation,
+} = translateApi;

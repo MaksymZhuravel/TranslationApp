@@ -1,8 +1,8 @@
 import SCREENS from '~constants/screens';
 import {HomeScreen} from '~containers/HomeScreen';
 import {Home} from '~asssets/icons';
-import {TranslationsTableScreen} from '~containers/TranslationsTableScreen';
 import Translate from '~asssets/icons/Translate';
+import LanguagesTableScreen from '~containers/LanguagesTableScreen/LanguagesTableScreen';
 
 const appScreens = [
   {
@@ -13,7 +13,7 @@ const appScreens = [
   },
   {
     name: SCREENS.TRANSLATION_TABLE,
-    component: TranslationsTableScreen,
+    component: LanguagesTableScreen,
     title: 'Languages',
     icon: Translate,
   },
